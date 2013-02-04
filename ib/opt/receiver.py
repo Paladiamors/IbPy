@@ -12,7 +12,6 @@
 #
 ##
 from ib.lib.overloading import overloaded
-<<<<<<< HEAD
 from ib.lib.logger import logger
 from ib.opt.message import registry, wrapperMethods
 
@@ -29,22 +28,6 @@ def messageMethod(name, argnames):
         self.dispatch(name, params)
     inner.__name__ = name
     return inner
-=======
-from ib.opt.message import wrapperMethods
-
-
-def messageMethod(name, parameters):
-    """ Creates method for dispatching messages.
-
-    @param name name of method as string
-    @param parameters list of method argument names
-    @return newly created method (as closure)
-    """
-    def dispatchMethod(self, *arguments):
-        self.dispatcher(name, dict(zip(parameters, arguments)))
-    dispatchMethod.__name__ = name
-    return dispatchMethod
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
 
 
 class ReceiverType(type):
@@ -61,13 +44,8 @@ class ReceiverType(type):
         @param namespace dictionary with namespace for new type
         @return generated type
         """
-<<<<<<< HEAD
         for methodname, methodargs in wrapperMethods():
             namespace[methodname] = messageMethod(methodname, methodargs)
-=======
-        for methodName, methodArgs in wrapperMethods:
-            namespace[methodName] = messageMethod(methodName, methodArgs)
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         return type(name, bases, namespace)
 
 
@@ -79,7 +57,6 @@ class Receiver(object):
     """
     __metaclass__ = ReceiverType
 
-<<<<<<< HEAD
     def __init__(self, listeners=None, types=None):
         """ Initializer.
 
@@ -175,14 +152,6 @@ class Receiver(object):
             return obj.__name__
         except (AttributeError, ):
             return str(obj)
-=======
-    def __init__(self, dispatcher):
-        """ Initializer.
-
-        @param dispatcher message dispatcher instance
-        """
-	self.dispatcher = dispatcher
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
 
     @overloaded
     def error(self, e):
@@ -195,11 +164,7 @@ class Receiver(object):
         @param e some error value
         @return None
         """
-<<<<<<< HEAD
         self.dispatch('error', dict(errorMsg=e))
-=======
-        self.dispatcher('error', dict(errorMsg=e))
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
 
     @error.register(object, str)
     def error_0(self, strval):
@@ -208,11 +173,7 @@ class Receiver(object):
         @param strval some error value as string
         @return None
         """
-<<<<<<< HEAD
         self.dispatch('error', dict(errorMsg=strval))
-=======
-        self.dispatcher('error', dict(errorMsg=strval))
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
 
     @error.register(object, int, int, str)
     def error_1(self, id, errorCode, errorMsg):
@@ -224,8 +185,4 @@ class Receiver(object):
         @return None
         """
         params = dict(id=id, errorCode=errorCode, errorMsg=errorMsg)
-<<<<<<< HEAD
         self.dispatch('error', params)
-=======
-        self.dispatcher('error', params)
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-<<<<<<< HEAD
 """ generated source for module EClientErrors """
 # 
 #  * EClientErrors.java
@@ -38,44 +37,6 @@ class EClientErrors(object):
             """ generated source for method __init__ """
             self.m_errorCode = i
             self.m_errorMsg = errString
-=======
-# -*- coding: utf-8 -*-
-
-##
-# Translated source for EClientErrors.
-##
-
-# Source file: EClientErrors.java
-# Target file: EClientErrors.py
-#
-# Original file copyright original author(s).
-# This file copyright Troy Melhase, troy@gci.net.
-#
-# WARNING: all changes to this file will be lost.
-
-
-class EClientErrors(object):
-    """ generated source for EClientErrors
-
-    """
-    class CodeMsgPair(object):
-        """ generated source for CodeMsgPair
-
-        """
-        m_errorCode = 0
-        m_errorMsg = ""
-
-        def code(self):
-            return self.m_errorCode
-
-        def msg(self):
-            return self.m_errorMsg
-
-        def __init__(self, i, errString):
-            self.m_errorCode = i
-            self.m_errorMsg = errString
-
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
     NO_VALID_ID = -1
     ALREADY_CONNECTED = CodeMsgPair(501, "Already connected.")
     CONNECT_FAIL = CodeMsgPair(502, "Couldn't connect to TWS.  Confirm that \"Enable ActiveX and Socket Clients\" is enabled on the TWS \"Configure->API\" menu.")
@@ -111,17 +72,11 @@ class EClientErrors(object):
     FAIL_SEND_CANCALCIMPLIEDVOLAT = CodeMsgPair(536, "Cancel Calculate Implied Volatility Sending Error - ")
     FAIL_SEND_CANCALCOPTIONPRICE = CodeMsgPair(537, "Cancel Calculate Option Price Sending Error - ")
     FAIL_SEND_REQGLOBALCANCEL = CodeMsgPair(538, "Request Global Cancel Sending Error - ")
-<<<<<<< HEAD
     FAIL_SEND_REQMARKETDATATYPE = CodeMsgPair(539, "Request Market Data Type Sending Error - ")
 
     def __init__(self):
         """ generated source for method __init__ """
         pass
     
-=======
-
-    def __init__(self):
-        pass
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
 
 

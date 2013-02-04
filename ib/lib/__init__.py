@@ -11,32 +11,10 @@
 ##
 
 import copy
-<<<<<<< HEAD
-=======
-import functools
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
 import socket
 import struct
 import sys
 
-<<<<<<< HEAD
-=======
-def toTypeName(value):
-    return '%s%s' % (value[0].upper(), value[1:])
-
-
-def maybeName(obj):
-    """ Returns an object's __name__ attribute or it's string representation.
-
-    @param obj any object
-    @return obj name or string representation
-    """
-    try:
-	return obj.__name__
-    except (AttributeError, ):
-	return str(obj)
-
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
 
 class classmethod_(classmethod):
     """ Classmethod that provides attribute delegation.
@@ -59,10 +37,6 @@ def synchronized(lock):
     @return decorator that provides automatic locking
     """
     def wrapper(func):
-<<<<<<< HEAD
-=======
-        @functools.wraps(func)
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         def inner(*args, **kwds):
             lock.acquire()
             try:
@@ -123,10 +97,6 @@ class DataInputStream(object):
 
         @param stream any object with recv method
         """
-<<<<<<< HEAD
-=======
-        self.stream = stream
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         self.recv = stream.recv
 
     def readByte(self, unpack=struct.unpack):
@@ -387,15 +357,3 @@ class Thread(ThreadType):
         @param dis ignored
         """
         ThreadType.__init__(self, name=name)
-<<<<<<< HEAD
-=======
-
-
-    def term(self):
-        def isInterrupted():
-            print 'down town'
-            return True
-        self.isInterrupted = isInterrupted
-        self.m_dis.stream.shutdown(socket.SHUT_RDWR)
-        self.m_dis.stream.close()
->>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
