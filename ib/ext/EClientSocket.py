@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+<<<<<<< HEAD
 """ generated source for module EClientSocket """
 from threading import RLock
 
@@ -32,11 +33,34 @@ from ib.ext.AnyWrapper import AnyWrapper
 from ib.ext.ComboLeg import ComboLeg
 from ib.ext.EClientErrors import EClientErrors
 from ib.ext.EReader import EReader
+=======
+# -*- coding: utf-8 -*-
+
+##
+# Translated source for EClientSocket.
+##
+
+# Source file: EClientSocket.java
+# Target file: EClientSocket.py
+#
+# Original file copyright original author(s).
+# This file copyright Troy Melhase, troy@gci.net.
+#
+# WARNING: all changes to this file will be lost.
+
+from logging import debug
+
+from ib.ext.ComboLeg import ComboLeg
+from ib.ext.EClientErrors import EClientErrors
+from ib.ext.EReader import EReader
+from ib.ext.Util import Util
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
 
 from ib.lib.overloading import overloaded
 from ib.lib import synchronized, Socket, DataInputStream, DataOutputStream
 from ib.lib import Double, Integer
 
+<<<<<<< HEAD
 from socket import SHUT_RDWR
 from threading import RLock
 mlock = RLock()
@@ -125,12 +149,26 @@ class EClientSocket(object):
     BAG_SEC_TYPE = "BAG"
 
     #  FA msg data types
+=======
+from threading import RLock
+mlock = RLock()
+
+class EClientSocket(object):
+    """ generated source for EClientSocket
+
+    """
+    CLIENT_VERSION = 48
+    SERVER_VERSION = 38
+    EOL = 0
+    BAG_SEC_TYPE = "BAG"
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
     GROUPS = 1
     PROFILES = 2
     ALIASES = 3
 
     @classmethod
     def faMsgTypeName(cls, faDataType):
+<<<<<<< HEAD
         """ generated source for method faMsgTypeName """
         if faDataType==cls.GROUPS:
             return "GROUPS"
@@ -141,6 +179,16 @@ class EClientSocket(object):
         return None
 
     #  outgoing msg id's
+=======
+        if faDataType == cls.GROUPS:
+            return "GROUPS"
+        elif faDataType == cls.PROFILES:
+            return "PROFILES"
+        elif faDataType == cls.ALIASES:
+            return "ALIASES"
+        return
+
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
     REQ_MKT_DATA = 1
     CANCEL_MKT_DATA = 2
     PLACE_ORDER = 3
@@ -176,7 +224,10 @@ class EClientSocket(object):
     CANCEL_CALC_IMPLIED_VOLAT = 56
     CANCEL_CALC_OPTION_PRICE = 57
     REQ_GLOBAL_CANCEL = 58
+<<<<<<< HEAD
     REQ_MARKET_DATA_TYPE = 59
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
     MIN_SERVER_VER_REAL_TIME_BARS = 34
     MIN_SERVER_VER_SCALE_ORDERS = 35
     MIN_SERVER_VER_SNAPSHOT_MKT_DATA = 35
@@ -201,6 +252,7 @@ class EClientSocket(object):
     MIN_SERVER_VER_SSHORTX_OLD = 51
     MIN_SERVER_VER_SSHORTX = 52
     MIN_SERVER_VER_REQ_GLOBAL_CANCEL = 53
+<<<<<<< HEAD
     MIN_SERVER_VER_HEDGE_ORDERS = 54
     MIN_SERVER_VER_REQ_MARKET_DATA_TYPE = 55
     MIN_SERVER_VER_OPT_OUT_SMART_ROUTING = 56
@@ -220,10 +272,17 @@ class EClientSocket(object):
     m_reader = None
 
     #  thread which reads msgs from socket
+=======
+    m_anyWrapper = None
+    m_dos = None
+    m_connected = bool()
+    m_reader = None
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
     m_serverVersion = 0
     m_TwsTime = ""
 
     def serverVersion(self):
+<<<<<<< HEAD
         """ generated source for method serverVersion """
         return self.m_serverVersion
 
@@ -245,24 +304,51 @@ class EClientSocket(object):
 
     def isConnected(self):
         """ generated source for method isConnected """
+=======
+        return self.m_serverVersion
+
+    def TwsConnectionTime(self):
+        return self.m_TwsTime
+
+    def wrapper(self):
+        return self.m_anyWrapper
+
+    def reader(self):
+        return self.m_reader
+
+    def __init__(self, anyWrapper):
+        self.m_anyWrapper = anyWrapper
+
+    def isConnected(self):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         return self.m_connected
 
     @overloaded
     @synchronized(mlock)
     def eConnect(self, host, port, clientId):
+<<<<<<< HEAD
         """ generated source for method eConnect """
         #  already connected?
         host = self.checkConnected(host)
         if host == None:
+=======
+        host = self.checkConnected(host)
+        if host is None:
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             return
         try:
             socket = Socket(host, port)
             self.eConnect(socket, clientId)
+<<<<<<< HEAD
         except Exception as e:
+=======
+        except (Exception, ):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.eDisconnect()
             self.connectionError()
 
     def connectionError(self):
+<<<<<<< HEAD
         """ generated source for method connectionError """
         self.m_anyWrapper.error(EClientErrors.NO_VALID_ID, EClientErrors.CONNECT_FAIL.code_(), EClientErrors.CONNECT_FAIL.msg())
         self.m_reader = None
@@ -272,17 +358,30 @@ class EClientSocket(object):
         if self.m_connected:
             self.m_anyWrapper.error(EClientErrors.NO_VALID_ID, EClientErrors.ALREADY_CONNECTED.code_(), EClientErrors.ALREADY_CONNECTED.msg())
             return None
+=======
+        self.m_anyWrapper.error(EClientErrors.NO_VALID_ID, EClientErrors.CONNECT_FAIL.code(), EClientErrors.CONNECT_FAIL.msg())
+        self.m_reader = None
+
+    def checkConnected(self, host):
+        if self.m_connected:
+            self.m_anyWrapper.error(EClientErrors.NO_VALID_ID, EClientErrors.ALREADY_CONNECTED.code(), EClientErrors.ALREADY_CONNECTED.msg())
+            return
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if self.isNull(host):
             host = "127.0.0.1"
         return host
 
     def createReader(self, socket, dis):
+<<<<<<< HEAD
         """ generated source for method createReader """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         return EReader(socket, dis)
 
     @eConnect.register(object, Socket, int)
     @synchronized(mlock)
     def eConnect_0(self, socket, clientId):
+<<<<<<< HEAD
         """ generated source for method eConnect_0 """
         #  create io streams
         self.m_dos = DataOutputStream(socket.getOutputStream())
@@ -305,19 +404,41 @@ class EClientSocket(object):
             self.send(clientId)
         self.m_reader.start()
         #  set connected flag
+=======
+        self.m_dos = DataOutputStream(socket.getOutputStream())
+        self.send(self.CLIENT_VERSION)
+        self.m_reader = self.createReader(self, DataInputStream(socket.getInputStream()))
+        self.m_serverVersion = self.m_reader.readInt()
+        debug("Server Version:  %s", self.m_serverVersion)
+        if self.m_serverVersion >= 20:
+            self.m_TwsTime = self.m_reader.readStr()
+            debug("TWS Time at connection:  %s", self.m_TwsTime)
+        if self.m_serverVersion < self.SERVER_VERSION:
+            self.eDisconnect()
+            self.m_anyWrapper.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS.code(), EClientErrors.UPDATE_TWS.msg())
+            return
+        if self.m_serverVersion >= 3:
+            self.send(clientId)
+        self.m_reader.start()
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         self.m_connected = True
 
     @synchronized(mlock)
     def eDisconnect(self):
+<<<<<<< HEAD
         """ generated source for method eDisconnect """
         #  not connected?
         if self.m_dos == None:
+=======
+        if self.m_dos is None:
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             return
         self.m_connected = False
         self.m_serverVersion = 0
         self.m_TwsTime = ""
         dos = self.m_dos
         self.m_dos = None
+<<<<<<< HEAD
         reader = self.m_reader
         self.m_reader = None
         try:
@@ -331,12 +452,28 @@ class EClientSocket(object):
             if dos != None:
                 dos.close()
         except Exception as e:
+=======
+        self.reader = self.m_reader
+        self.m_reader = None
+        try:
+            if self.reader is not None:
+                self.reader.interrupt()
+        except (Exception, ):
+            pass
+        try:
+            if dos is not None:
+                dos.close()
+        except (Exception, ):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             pass
 
     @synchronized(mlock)
     def cancelScannerSubscription(self, tickerId):
+<<<<<<< HEAD
         """ generated source for method cancelScannerSubscription """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -344,19 +481,30 @@ class EClientSocket(object):
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS, "  It does not support API scanner subscription.")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send cancel mkt data msg
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         try:
             self.send(self.CANCEL_SCANNER_SUBSCRIPTION)
             self.send(VERSION)
             self.send(tickerId)
+<<<<<<< HEAD
         except Exception as e:
             self.error(tickerId, EClientErrors.FAIL_SEND_CANSCANNER, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(tickerId, EClientErrors.FAIL_SEND_CANSCANNER, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqScannerParameters(self):
+<<<<<<< HEAD
         """ generated source for method reqScannerParameters """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -367,14 +515,22 @@ class EClientSocket(object):
         try:
             self.send(self.REQ_SCANNER_PARAMETERS)
             self.send(VERSION)
+<<<<<<< HEAD
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_REQSCANNERPARAMETERS, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_REQSCANNERPARAMETERS, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqScannerSubscription(self, tickerId, subscription):
+<<<<<<< HEAD
         """ generated source for method reqScannerSubscription """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -409,13 +565,21 @@ class EClientSocket(object):
                 self.send(subscription.scannerSettingPairs())
             if self.m_serverVersion >= 27:
                 self.send(subscription.stockTypeFilter())
+<<<<<<< HEAD
         except Exception as e:
             self.error(tickerId, EClientErrors.FAIL_SEND_REQSCANNER, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(tickerId, EClientErrors.FAIL_SEND_REQSCANNER, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqMktData(self, tickerId, contract, genericTickList, snapshot):
+<<<<<<< HEAD
         """ generated source for method reqMktData """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -423,7 +587,11 @@ class EClientSocket(object):
             self.error(tickerId, EClientErrors.UPDATE_TWS, "  It does not support snapshot market data requests.")
             return
         if self.m_serverVersion < self.MIN_SERVER_VER_UNDER_COMP:
+<<<<<<< HEAD
             if contract.m_underComp != None:
+=======
+            if contract.m_underComp is not None:
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                 self.error(tickerId, EClientErrors.UPDATE_TWS, "  It does not support delta-neutral orders.")
                 return
         if self.m_serverVersion < self.MIN_SERVER_VER_REQ_MKT_DATA_CONID:
@@ -432,11 +600,17 @@ class EClientSocket(object):
                 return
         VERSION = 9
         try:
+<<<<<<< HEAD
             #  send req mkt data msg
             self.send(self.REQ_MKT_DATA)
             self.send(VERSION)
             self.send(tickerId)
             #  send contract fields
+=======
+            self.send(self.REQ_MKT_DATA)
+            self.send(VERSION)
+            self.send(tickerId)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             if self.m_serverVersion >= self.MIN_SERVER_VER_REQ_MKT_DATA_CONID:
                 self.send(contract.m_conId)
             self.send(contract.m_symbol)
@@ -453,6 +627,7 @@ class EClientSocket(object):
             if self.m_serverVersion >= 2:
                 self.send(contract.m_localSymbol)
             if self.m_serverVersion >= 8 and self.BAG_SEC_TYPE.lower() == contract.m_secType.lower():
+<<<<<<< HEAD
                 if contract.m_comboLegs == None:
                     self.send(0)
                 else:
@@ -460,13 +635,28 @@ class EClientSocket(object):
                     i = 0
                     while i < len(contract.m_comboLegs):
                         comboLeg = contract.m_comboLegs.get(i)
+=======
+                if contract.m_comboLegs is None:
+                    self.send(0)
+                else:
+                    self.send(len(contract.m_comboLegs))
+                    comboLeg = ComboLeg()
+                    ## for-while
+                    i = 0
+                    while i < len(contract.m_comboLegs):
+                        comboLeg = contract.m_comboLegs[i]
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                         self.send(comboLeg.m_conId)
                         self.send(comboLeg.m_ratio)
                         self.send(comboLeg.m_action)
                         self.send(comboLeg.m_exchange)
                         i += 1
             if self.m_serverVersion >= self.MIN_SERVER_VER_UNDER_COMP:
+<<<<<<< HEAD
                 if contract.m_underComp != None:
+=======
+                if contract.m_underComp is not None:
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                     underComp = contract.m_underComp
                     self.send(True)
                     self.send(underComp.m_conId)
@@ -475,6 +665,7 @@ class EClientSocket(object):
                 else:
                     self.send(False)
             if self.m_serverVersion >= 31:
+<<<<<<< HEAD
                 # 
                 #             	 * Note: Even though SHORTABLE tick type supported only
                 #             	 *       starting server version 33 it would be relatively
@@ -487,12 +678,22 @@ class EClientSocket(object):
                 self.send(snapshot)
         except Exception as e:
             self.error(tickerId, EClientErrors.FAIL_SEND_REQMKT, "" + e)
+=======
+                self.send(genericTickList)
+            if self.m_serverVersion >= self.MIN_SERVER_VER_SNAPSHOT_MKT_DATA:
+                self.send(snapshot)
+        except (Exception, ), e:
+            self.error(tickerId, EClientErrors.FAIL_SEND_REQMKT, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def cancelHistoricalData(self, tickerId):
+<<<<<<< HEAD
         """ generated source for method cancelHistoricalData """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -500,11 +701,15 @@ class EClientSocket(object):
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS, "  It does not support historical data query cancellation.")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send cancel mkt data msg
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         try:
             self.send(self.CANCEL_HISTORICAL_DATA)
             self.send(VERSION)
             self.send(tickerId)
+<<<<<<< HEAD
         except Exception as e:
             self.error(tickerId, EClientErrors.FAIL_SEND_CANHISTDATA, "" + e)
             self.close()
@@ -512,6 +717,13 @@ class EClientSocket(object):
     def cancelRealTimeBars(self, tickerId):
         """ generated source for method cancelRealTimeBars """
         #  not connected?
+=======
+        except (Exception, ), e:
+            self.error(tickerId, EClientErrors.FAIL_SEND_CANHISTDATA, str(e))
+            self.close()
+
+    def cancelRealTimeBars(self, tickerId):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -519,11 +731,15 @@ class EClientSocket(object):
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS, "  It does not support realtime bar data query cancellation.")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send cancel mkt data msg
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         try:
             self.send(self.CANCEL_REAL_TIME_BARS)
             self.send(VERSION)
             self.send(tickerId)
+<<<<<<< HEAD
         except Exception as e:
             self.error(tickerId, EClientErrors.FAIL_SEND_CANRTBARS, "" + e)
             self.close()
@@ -532,6 +748,21 @@ class EClientSocket(object):
     def reqHistoricalData(self, tickerId, contract, endDateTime, durationStr, barSizeSetting, whatToShow, useRTH, formatDate):
         """ generated source for method reqHistoricalData """
         #  not connected?
+=======
+        except (Exception, ), e:
+            self.error(tickerId, EClientErrors.FAIL_SEND_CANRTBARS, str(e))
+            self.close()
+
+    @synchronized(mlock)
+    def reqHistoricalData(self, tickerId,
+                                contract,
+                                endDateTime,
+                                durationStr,
+                                barSizeSetting,
+                                whatToShow,
+                                useRTH,
+                                formatDate):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(tickerId, EClientErrors.NOT_CONNECTED, "")
             return
@@ -543,7 +774,10 @@ class EClientSocket(object):
             self.send(self.REQ_HISTORICAL_DATA)
             self.send(VERSION)
             self.send(tickerId)
+<<<<<<< HEAD
             #  send contract fields
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.send(contract.m_symbol)
             self.send(contract.m_secType)
             self.send(contract.m_expiry)
@@ -565,6 +799,7 @@ class EClientSocket(object):
             if self.m_serverVersion > 16:
                 self.send(formatDate)
             if self.BAG_SEC_TYPE.lower() == contract.m_secType.lower():
+<<<<<<< HEAD
                 if contract.m_comboLegs == None:
                     self.send(0)
                 else:
@@ -572,11 +807,23 @@ class EClientSocket(object):
                     i = 0
                     while i < len(contract.m_comboLegs):
                         comboLeg = contract.m_comboLegs.get(i)
+=======
+                if contract.m_comboLegs is None:
+                    self.send(0)
+                else:
+                    self.send(len(contract.m_comboLegs))
+                    comboLeg = ComboLeg()
+                    ## for-while
+                    i = 0
+                    while i < len(contract.m_comboLegs):
+                        comboLeg = contract.m_comboLegs[i]
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                         self.send(comboLeg.m_conId)
                         self.send(comboLeg.m_ratio)
                         self.send(comboLeg.m_action)
                         self.send(comboLeg.m_exchange)
                         i += 1
+<<<<<<< HEAD
         except Exception as e:
             self.error(tickerId, EClientErrors.FAIL_SEND_REQHISTDATA, "" + e)
             self.close()
@@ -585,6 +832,18 @@ class EClientSocket(object):
     def reqRealTimeBars(self, tickerId, contract, barSize, whatToShow, useRTH):
         """ generated source for method reqRealTimeBars """
         #  not connected?
+=======
+        except (Exception, ), e:
+            self.error(tickerId, EClientErrors.FAIL_SEND_REQHISTDATA, str(e))
+            self.close()
+
+    @synchronized(mlock)
+    def reqRealTimeBars(self, tickerId,
+                              contract,
+                              barSize,
+                              whatToShow,
+                              useRTH):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -593,11 +852,17 @@ class EClientSocket(object):
             return
         VERSION = 1
         try:
+<<<<<<< HEAD
             #  send req mkt data msg
             self.send(self.REQ_REAL_TIME_BARS)
             self.send(VERSION)
             self.send(tickerId)
             #  send contract fields
+=======
+            self.send(self.REQ_REAL_TIME_BARS)
+            self.send(VERSION)
+            self.send(tickerId)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.send(contract.m_symbol)
             self.send(contract.m_secType)
             self.send(contract.m_expiry)
@@ -611,12 +876,18 @@ class EClientSocket(object):
             self.send(barSize)
             self.send(whatToShow)
             self.send(useRTH)
+<<<<<<< HEAD
         except Exception as e:
             self.error(tickerId, EClientErrors.FAIL_SEND_REQRTBARS, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(tickerId, EClientErrors.FAIL_SEND_REQRTBARS, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqContractDetails(self, reqId, contract):
+<<<<<<< HEAD
         """ generated source for method reqContractDetails """
         #  not connected?
         if not self.m_connected:
@@ -625,6 +896,13 @@ class EClientSocket(object):
         #  This feature is only available for versions of TWS >=4
         if self.m_serverVersion < 4:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS.code_(), EClientErrors.UPDATE_TWS.msg())
+=======
+        if not self.m_connected:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
+            return
+        if self.m_serverVersion < 4:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS.code(), EClientErrors.UPDATE_TWS.msg())
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             return
         if self.m_serverVersion < self.MIN_SERVER_VER_SEC_ID_TYPE:
             if not self.IsEmpty(contract.m_secIdType) or not self.IsEmpty(contract.m_secId):
@@ -632,12 +910,18 @@ class EClientSocket(object):
                 return
         VERSION = 6
         try:
+<<<<<<< HEAD
             #  send req mkt data msg
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.send(self.REQ_CONTRACT_DATA)
             self.send(VERSION)
             if self.m_serverVersion >= self.MIN_SERVER_VER_CONTRACT_DATA_CHAIN:
                 self.send(reqId)
+<<<<<<< HEAD
             #  send contract fields
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             if self.m_serverVersion >= self.MIN_SERVER_VER_CONTRACT_CONID:
                 self.send(contract.m_conId)
             self.send(contract.m_symbol)
@@ -655,12 +939,18 @@ class EClientSocket(object):
             if self.m_serverVersion >= self.MIN_SERVER_VER_SEC_ID_TYPE:
                 self.send(contract.m_secIdType)
                 self.send(contract.m_secId)
+<<<<<<< HEAD
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_REQCONTRACT, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_REQCONTRACT, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqMktDepth(self, tickerId, contract, numRows):
+<<<<<<< HEAD
         """ generated source for method reqMktDepth """
         #  not connected?
         if not self.m_connected:
@@ -677,6 +967,19 @@ class EClientSocket(object):
             self.send(VERSION)
             self.send(tickerId)
             #  send contract fields
+=======
+        if not self.m_connected:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
+            return
+        if self.m_serverVersion < 6:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS.code(), EClientErrors.UPDATE_TWS.msg())
+            return
+        VERSION = 3
+        try:
+            self.send(self.REQ_MKT_DEPTH)
+            self.send(VERSION)
+            self.send(tickerId)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.send(contract.m_symbol)
             self.send(contract.m_secType)
             self.send(contract.m_expiry)
@@ -689,29 +992,46 @@ class EClientSocket(object):
             self.send(contract.m_localSymbol)
             if self.m_serverVersion >= 19:
                 self.send(numRows)
+<<<<<<< HEAD
         except Exception as e:
             self.error(tickerId, EClientErrors.FAIL_SEND_REQMKTDEPTH, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(tickerId, EClientErrors.FAIL_SEND_REQMKTDEPTH, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def cancelMktData(self, tickerId):
+<<<<<<< HEAD
         """ generated source for method cancelMktData """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send cancel mkt data msg
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         try:
             self.send(self.CANCEL_MKT_DATA)
             self.send(VERSION)
             self.send(tickerId)
+<<<<<<< HEAD
         except Exception as e:
             self.error(tickerId, EClientErrors.FAIL_SEND_CANMKT, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(tickerId, EClientErrors.FAIL_SEND_CANMKT, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def cancelMktDepth(self, tickerId):
+<<<<<<< HEAD
         """ generated source for method cancelMktDepth """
         #  not connected?
         if not self.m_connected:
@@ -723,10 +1043,20 @@ class EClientSocket(object):
             return
         VERSION = 1
         #  send cancel mkt data msg
+=======
+        if not self.m_connected:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
+            return
+        if self.m_serverVersion < 6:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS.code(), EClientErrors.UPDATE_TWS.msg())
+            return
+        VERSION = 1
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         try:
             self.send(self.CANCEL_MKT_DEPTH)
             self.send(VERSION)
             self.send(tickerId)
+<<<<<<< HEAD
         except Exception as e:
             self.error(tickerId, EClientErrors.FAIL_SEND_CANMKTDEPTH, "" + e)
             self.close()
@@ -735,6 +1065,19 @@ class EClientSocket(object):
     def exerciseOptions(self, tickerId, contract, exerciseAction, exerciseQuantity, account, override):
         """ generated source for method exerciseOptions """
         #  not connected?
+=======
+        except (Exception, ), e:
+            self.error(tickerId, EClientErrors.FAIL_SEND_CANMKTDEPTH, str(e))
+            self.close()
+
+    @synchronized(mlock)
+    def exerciseOptions(self, tickerId,
+                              contract,
+                              exerciseAction,
+                              exerciseQuantity,
+                              account,
+                              override):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(tickerId, EClientErrors.NOT_CONNECTED, "")
             return
@@ -746,7 +1089,10 @@ class EClientSocket(object):
             self.send(self.EXERCISE_OPTIONS)
             self.send(VERSION)
             self.send(tickerId)
+<<<<<<< HEAD
             #  send contract fields
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.send(contract.m_symbol)
             self.send(contract.m_secType)
             self.send(contract.m_expiry)
@@ -760,27 +1106,48 @@ class EClientSocket(object):
             self.send(exerciseQuantity)
             self.send(account)
             self.send(override)
+<<<<<<< HEAD
         except Exception as e:
             self.error(tickerId, EClientErrors.FAIL_SEND_REQMKT, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(tickerId, EClientErrors.FAIL_SEND_REQMKT, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def placeOrder(self, id, contract, order):
+<<<<<<< HEAD
         """ generated source for method placeOrder """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         if self.m_serverVersion < self.MIN_SERVER_VER_SCALE_ORDERS:
+<<<<<<< HEAD
             if order.m_scaleInitLevelSize != Integer.MAX_VALUE or order.m_scalePriceIncrement != Double.MAX_VALUE:
+=======
+            if (order.m_scaleInitLevelSize != Integer.MAX_VALUE) or (order.m_scalePriceIncrement != Double.MAX_VALUE):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                 self.error(id, EClientErrors.UPDATE_TWS, "  It does not support Scale orders.")
                 return
         if self.m_serverVersion < self.MIN_SERVER_VER_SSHORT_COMBO_LEGS:
             if not contract.m_comboLegs.isEmpty():
+<<<<<<< HEAD
                 i = 0
                 while i < len(contract.m_comboLegs):
                     comboLeg = contract.m_comboLegs.get(i)
                     if comboLeg.m_shortSaleSlot != 0 or not self.IsEmpty(comboLeg.m_designatedLocation):
+=======
+                comboLeg = ComboLeg()
+                ## for-while
+                i = 0
+                while i < len(contract.m_comboLegs):
+                    comboLeg = contract.m_comboLegs[i]
+                    if (comboLeg.m_shortSaleSlot != 0) or not self.IsEmpty(comboLeg.m_designatedLocation):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                         self.error(id, EClientErrors.UPDATE_TWS, "  It does not support SSHORT flag for combo legs.")
                         return
                     i += 1
@@ -789,11 +1156,19 @@ class EClientSocket(object):
                 self.error(id, EClientErrors.UPDATE_TWS, "  It does not support what-if orders.")
                 return
         if self.m_serverVersion < self.MIN_SERVER_VER_UNDER_COMP:
+<<<<<<< HEAD
             if contract.m_underComp != None:
                 self.error(id, EClientErrors.UPDATE_TWS, "  It does not support delta-neutral orders.")
                 return
         if self.m_serverVersion < self.MIN_SERVER_VER_SCALE_ORDERS2:
             if order.m_scaleSubsLevelSize != Integer.MAX_VALUE:
+=======
+            if contract.m_underComp is not None:
+                self.error(id, EClientErrors.UPDATE_TWS, "  It does not support delta-neutral orders.")
+                return
+        if self.m_serverVersion < self.MIN_SERVER_VER_SCALE_ORDERS2:
+            if (order.m_scaleSubsLevelSize != Integer.MAX_VALUE):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                 self.error(id, EClientErrors.UPDATE_TWS, "  It does not support Subsequent Level Size for Scale orders.")
                 return
         if self.m_serverVersion < self.MIN_SERVER_VER_ALGO_ORDERS:
@@ -813,11 +1188,16 @@ class EClientSocket(object):
                 self.error(id, EClientErrors.UPDATE_TWS, "  It does not support conId parameter.")
                 return
         if self.m_serverVersion < self.MIN_SERVER_VER_SSHORTX:
+<<<<<<< HEAD
             if order.m_exemptCode != -1:
+=======
+            if (order.m_exemptCode != -1):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                 self.error(id, EClientErrors.UPDATE_TWS, "  It does not support exemptCode parameter.")
                 return
         if self.m_serverVersion < self.MIN_SERVER_VER_SSHORTX:
             if not contract.m_comboLegs.isEmpty():
+<<<<<<< HEAD
                 i = 0
                 while i < len(contract.m_comboLegs):
                     comboLeg = contract.m_comboLegs.get(i)
@@ -857,11 +1237,26 @@ class EClientSocket(object):
                 return
         VERSION = 27 if (self.m_serverVersion < self.MIN_SERVER_VER_NOT_HELD) else 38
         #  send place order msg
+=======
+                comboLeg = ComboLeg()
+                ## for-while
+                i = 0
+                while i < len(contract.m_comboLegs):
+                    comboLeg = contract.m_comboLegs[i]
+                    if (comboLeg.m_exemptCode != -1):
+                        self.error(id, EClientErrors.UPDATE_TWS, "  It does not support exemptCode parameter.")
+                        return
+                    i += 1
+        VERSION = 27 if self.m_serverVersion < self.MIN_SERVER_VER_NOT_HELD else 31
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         try:
             self.send(self.PLACE_ORDER)
             self.send(VERSION)
             self.send(id)
+<<<<<<< HEAD
             #  send contract fields
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             if self.m_serverVersion >= self.MIN_SERVER_VER_PLACE_ORDER_CONID:
                 self.send(contract.m_conId)
             self.send(contract.m_symbol)
@@ -880,6 +1275,7 @@ class EClientSocket(object):
             if self.m_serverVersion >= self.MIN_SERVER_VER_SEC_ID_TYPE:
                 self.send(contract.m_secIdType)
                 self.send(contract.m_secId)
+<<<<<<< HEAD
             #  send main order fields
             self.send(order.m_action)
             self.send(order.m_totalQuantity)
@@ -893,6 +1289,13 @@ class EClientSocket(object):
             else:
                 self.sendMax(order.m_auxPrice)
             #  send extended order fields
+=======
+            self.send(order.m_action)
+            self.send(order.m_totalQuantity)
+            self.send(order.m_orderType)
+            self.send(order.m_lmtPrice)
+            self.send(order.m_auxPrice)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.send(order.m_tif)
             self.send(order.m_ocaGroup)
             self.send(order.m_account)
@@ -908,12 +1311,17 @@ class EClientSocket(object):
                 self.send(order.m_displaySize)
                 self.send(order.m_triggerMethod)
                 if self.m_serverVersion < 38:
+<<<<<<< HEAD
                     #  will never happen
                     self.send(False)#  order.m_ignoreRth 
+=======
+                    self.send(False)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                 else:
                     self.send(order.m_outsideRth)
             if self.m_serverVersion >= 7:
                 self.send(order.m_hidden)
+<<<<<<< HEAD
             #  Send combo legs for BAG requests
             if self.m_serverVersion >= 8 and self.BAG_SEC_TYPE.lower() == contract.m_secType.lower():
                 if contract.m_comboLegs == None:
@@ -924,6 +1332,18 @@ class EClientSocket(object):
                     i = 0
                     while i < len(contract.m_comboLegs):
                         comboLeg = contract.m_comboLegs.get(i)
+=======
+            if self.m_serverVersion >= 8 and self.BAG_SEC_TYPE.lower() == contract.m_secType.lower():
+                if contract.m_comboLegs is None:
+                    self.send(0)
+                else:
+                    self.send(len(contract.m_comboLegs))
+                    comboLeg = ComboLeg()
+                    ## for-while
+                    i = 0
+                    while i < len(contract.m_comboLegs):
+                        comboLeg = contract.m_comboLegs[i]
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                         self.send(comboLeg.m_conId)
                         self.send(comboLeg.m_ratio)
                         self.send(comboLeg.m_action)
@@ -935,6 +1355,7 @@ class EClientSocket(object):
                         if self.m_serverVersion >= self.MIN_SERVER_VER_SSHORTX_OLD:
                             self.send(comboLeg.m_exemptCode)
                         i += 1
+<<<<<<< HEAD
             #  Send order combo legs for BAG requests
             if self.m_serverVersion >= self.MIN_SERVER_VER_ORDER_COMBO_LEGS_PRICE and self.BAG_SEC_TYPE.lower() == contract.m_secType.lower():
                 if order.m_orderComboLegs == None:
@@ -961,6 +1382,9 @@ class EClientSocket(object):
                         i += 1
             if self.m_serverVersion >= 9:
                 #  send deprecated sharesAllocation field
+=======
+            if self.m_serverVersion >= 9:
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                 self.send("")
             if self.m_serverVersion >= 10:
                 self.send(order.m_discretionaryAmt)
@@ -974,18 +1398,27 @@ class EClientSocket(object):
                 self.send(order.m_faPercentage)
                 self.send(order.m_faProfile)
             if self.m_serverVersion >= 18:
+<<<<<<< HEAD
                 #  institutional short sale slot fields.
                 self.send(order.m_shortSaleSlot)
                 #  0 only for retail, 1 or 2 only for institution.
                 self.send(order.m_designatedLocation)
                 #  only populate when order.m_shortSaleSlot = 2.
+=======
+                self.send(order.m_shortSaleSlot)
+                self.send(order.m_designatedLocation)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             if self.m_serverVersion >= self.MIN_SERVER_VER_SSHORTX_OLD:
                 self.send(order.m_exemptCode)
             if self.m_serverVersion >= 19:
                 self.send(order.m_ocaType)
                 if self.m_serverVersion < 38:
+<<<<<<< HEAD
                     #  will never happen
                     self.send(False)#  order.m_rthOnly 
+=======
+                    self.send(False)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                 self.send(order.m_rule80A)
                 self.send(order.m_settlingFirm)
                 self.send(order.m_allOrNone)
@@ -998,15 +1431,23 @@ class EClientSocket(object):
                 self.sendMax(order.m_startingPrice)
                 self.sendMax(order.m_stockRefPrice)
                 self.sendMax(order.m_delta)
+<<<<<<< HEAD
                 #  Volatility orders had specific watermark price attribs in server version 26
                 lower = Double.MAX_VALUE if (self.m_serverVersion == 26 and order.m_orderType.equals("VOL")) else order.m_stockRangeLower 
                 upper = Double.MAX_VALUE if (self.m_serverVersion == 26 and order.m_orderType.equals("VOL")) else order.m_stockRangeUpper
+=======
+                lower = Double.MAX_VALUE if (self.m_serverVersion == 26) and order.m_orderType == "VOL" else order.m_stockRangeLower
+                upper = Double.MAX_VALUE if (self.m_serverVersion == 26) and order.m_orderType == "VOL" else order.m_stockRangeUpper
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                 self.sendMax(lower)
                 self.sendMax(upper)
             if self.m_serverVersion >= 22:
                 self.send(order.m_overridePercentageConstraints)
             if self.m_serverVersion >= 26:
+<<<<<<< HEAD
                 #  Volatility orders
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                 self.sendMax(order.m_volatility)
                 self.sendMax(order.m_volatilityType)
                 if self.m_serverVersion < 28:
@@ -1014,6 +1455,7 @@ class EClientSocket(object):
                 else:
                     self.send(order.m_deltaNeutralOrderType)
                     self.sendMax(order.m_deltaNeutralAuxPrice)
+<<<<<<< HEAD
                     if self.m_serverVersion >= self.MIN_SERVER_VER_DELTA_NEUTRAL_CONID and not self.IsEmpty(order.m_deltaNeutralOrderType):
                         self.send(order.m_deltaNeutralConId)
                         self.send(order.m_deltaNeutralSettlingFirm)
@@ -1022,14 +1464,24 @@ class EClientSocket(object):
                 self.send(order.m_continuousUpdate)
                 if self.m_serverVersion == 26:
                     #  Volatility orders had specific watermark price attribs in server version 26
+=======
+                self.send(order.m_continuousUpdate)
+                if (self.m_serverVersion == 26):
+                    lower = order.m_stockRangeLower if order.m_orderType == "VOL" else Double.MAX_VALUE
+                    upper = order.m_stockRangeUpper if order.m_orderType == "VOL" else Double.MAX_VALUE
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                     self.sendMax(lower)
                     self.sendMax(upper)
                 self.sendMax(order.m_referencePriceType)
             if self.m_serverVersion >= 30:
+<<<<<<< HEAD
                 #  TRAIL_STOP_LIMIT stop price
                 self.sendMax(order.m_trailStopPrice)
             if self.m_serverVersion >= self.MIN_SERVER_VER_TRAILING_PERCENT:
                 self.sendMax(order.m_trailingPercent)
+=======
+                self.sendMax(order.m_trailStopPrice)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             if self.m_serverVersion >= self.MIN_SERVER_VER_SCALE_ORDERS:
                 if self.m_serverVersion >= self.MIN_SERVER_VER_SCALE_ORDERS2:
                     self.sendMax(order.m_scaleInitLevelSize)
@@ -1038,6 +1490,7 @@ class EClientSocket(object):
                     self.send("")
                     self.sendMax(order.m_scaleInitLevelSize)
                 self.sendMax(order.m_scalePriceIncrement)
+<<<<<<< HEAD
             if self.m_serverVersion >= self.MIN_SERVER_VER_SCALE_ORDERS3 and order.m_scalePriceIncrement > 0.0 and order.m_scalePriceIncrement != Double.MAX_VALUE:
                 self.sendMax(order.m_scalePriceAdjustValue)
                 self.sendMax(order.m_scalePriceAdjustInterval)
@@ -1052,13 +1505,19 @@ class EClientSocket(object):
                     self.send(order.m_hedgeParam)
             if self.m_serverVersion >= self.MIN_SERVER_VER_OPT_OUT_SMART_ROUTING:
                 self.send(order.m_optOutSmartRouting)
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             if self.m_serverVersion >= self.MIN_SERVER_VER_PTA_ORDERS:
                 self.send(order.m_clearingAccount)
                 self.send(order.m_clearingIntent)
             if self.m_serverVersion >= self.MIN_SERVER_VER_NOT_HELD:
                 self.send(order.m_notHeld)
             if self.m_serverVersion >= self.MIN_SERVER_VER_UNDER_COMP:
+<<<<<<< HEAD
                 if contract.m_underComp != None:
+=======
+                if contract.m_underComp is not None:
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                     underComp = contract.m_underComp
                     self.send(True)
                     self.send(underComp.m_conId)
@@ -1070,6 +1529,7 @@ class EClientSocket(object):
                 self.send(order.m_algoStrategy)
                 if not self.IsEmpty(order.m_algoStrategy):
                     algoParams = order.m_algoParams
+<<<<<<< HEAD
                     if algoParams:
                         algoParamsCount = len(algoParams)
                     else:
@@ -1078,100 +1538,169 @@ class EClientSocket(object):
                     self.send(algoParamsCount)
                     if algoParamsCount > 0:
                         while i < algoParamsCount:
+=======
+                    algoParamsCount = 0 if algoParams is None else len(algoParams)
+                    self.send(algoParamsCount)
+                    if algoParamsCount > 0:
+                        ## for-while
+                        i = 0
+                        while i < algoParamsCount:
+                            tagValue = algoParams[i]
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                             self.send(tagValue.m_tag)
                             self.send(tagValue.m_value)
                             i += 1
             if self.m_serverVersion >= self.MIN_SERVER_VER_WHAT_IF_ORDERS:
                 self.send(order.m_whatIf)
+<<<<<<< HEAD
         except Exception as e:
             self.error(id, EClientErrors.FAIL_SEND_ORDER, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(id, EClientErrors.FAIL_SEND_ORDER, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqAccountUpdates(self, subscribe, acctCode):
+<<<<<<< HEAD
         """ generated source for method reqAccountUpdates """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         VERSION = 2
+<<<<<<< HEAD
         #  send cancel order msg
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         try:
             self.send(self.REQ_ACCOUNT_DATA)
             self.send(VERSION)
             self.send(subscribe)
+<<<<<<< HEAD
             #  Send the account code. This will only be used for FA clients
             if self.m_serverVersion >= 9:
                 self.send(acctCode)
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_ACCT, "" + e)
+=======
+            if self.m_serverVersion >= 9:
+                self.send(acctCode)
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_ACCT, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqExecutions(self, reqId, filter):
+<<<<<<< HEAD
         """ generated source for method reqExecutions """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         VERSION = 3
+<<<<<<< HEAD
         #  send cancel order msg
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         try:
             self.send(self.REQ_EXECUTIONS)
             self.send(VERSION)
             if self.m_serverVersion >= self.MIN_SERVER_VER_EXECUTION_DATA_CHAIN:
                 self.send(reqId)
+<<<<<<< HEAD
             #  Send the execution rpt filter data
             if self.m_serverVersion >= 9:
                 self.send(filter.m_clientId)
                 self.send(filter.m_acctCode)
                 #  Note that the valid format for m_time is "yyyymmdd-hh:mm:ss"
+=======
+            if self.m_serverVersion >= 9:
+                self.send(filter.m_clientId)
+                self.send(filter.m_acctCode)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
                 self.send(filter.m_time)
                 self.send(filter.m_symbol)
                 self.send(filter.m_secType)
                 self.send(filter.m_exchange)
                 self.send(filter.m_side)
+<<<<<<< HEAD
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_EXEC, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_EXEC, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def cancelOrder(self, id):
+<<<<<<< HEAD
         """ generated source for method cancelOrder """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send cancel order msg
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         try:
             self.send(self.CANCEL_ORDER)
             self.send(VERSION)
             self.send(id)
+<<<<<<< HEAD
         except Exception as e:
             self.error(id, EClientErrors.FAIL_SEND_CORDER, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(id, EClientErrors.FAIL_SEND_CORDER, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqOpenOrders(self):
+<<<<<<< HEAD
         """ generated source for method reqOpenOrders """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send cancel order msg
         try:
             self.send(self.REQ_OPEN_ORDERS)
             self.send(VERSION)
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_OORDER, "" + e)
+=======
+        try:
+            self.send(self.REQ_OPEN_ORDERS)
+            self.send(VERSION)
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_OORDER, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqIds(self, numIds):
+<<<<<<< HEAD
         """ generated source for method reqIds """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -1180,14 +1709,22 @@ class EClientSocket(object):
             self.send(self.REQ_IDS)
             self.send(VERSION)
             self.send(numIds)
+<<<<<<< HEAD
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_CORDER, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_CORDER, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqNewsBulletins(self, allMsgs):
+<<<<<<< HEAD
         """ generated source for method reqNewsBulletins """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -1196,94 +1733,155 @@ class EClientSocket(object):
             self.send(self.REQ_NEWS_BULLETINS)
             self.send(VERSION)
             self.send(allMsgs)
+<<<<<<< HEAD
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_CORDER, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_CORDER, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def cancelNewsBulletins(self):
+<<<<<<< HEAD
         """ generated source for method cancelNewsBulletins """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send cancel order msg
         try:
             self.send(self.CANCEL_NEWS_BULLETINS)
             self.send(VERSION)
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_CORDER, "" + e)
+=======
+        try:
+            self.send(self.CANCEL_NEWS_BULLETINS)
+            self.send(VERSION)
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_CORDER, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def setServerLogLevel(self, logLevel):
+<<<<<<< HEAD
         """ generated source for method setServerLogLevel """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send the set server logging level message
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         try:
             self.send(self.SET_SERVER_LOGLEVEL)
             self.send(VERSION)
             self.send(logLevel)
+<<<<<<< HEAD
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_SERVER_LOG_LEVEL, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_SERVER_LOG_LEVEL, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqAutoOpenOrders(self, bAutoBind):
+<<<<<<< HEAD
         """ generated source for method reqAutoOpenOrders """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send req open orders msg
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         try:
             self.send(self.REQ_AUTO_OPEN_ORDERS)
             self.send(VERSION)
             self.send(bAutoBind)
+<<<<<<< HEAD
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_OORDER, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_OORDER, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqAllOpenOrders(self):
+<<<<<<< HEAD
         """ generated source for method reqAllOpenOrders """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send req all open orders msg
         try:
             self.send(self.REQ_ALL_OPEN_ORDERS)
             self.send(VERSION)
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_OORDER, "" + e)
+=======
+        try:
+            self.send(self.REQ_ALL_OPEN_ORDERS)
+            self.send(VERSION)
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_OORDER, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqManagedAccts(self):
+<<<<<<< HEAD
         """ generated source for method reqManagedAccts """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send req FA managed accounts msg
         try:
             self.send(self.REQ_MANAGED_ACCTS)
             self.send(VERSION)
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_OORDER, "" + e)
+=======
+        try:
+            self.send(self.REQ_MANAGED_ACCTS)
+            self.send(VERSION)
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_OORDER, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def requestFA(self, faDataType):
+<<<<<<< HEAD
         """ generated source for method requestFA """
         #  not connected?
         if not self.m_connected:
@@ -1292,18 +1890,31 @@ class EClientSocket(object):
         #  This feature is only available for versions of TWS >= 13
         if self.m_serverVersion < 13:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS.code_(), EClientErrors.UPDATE_TWS.msg())
+=======
+        if not self.m_connected:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
+            return
+        if self.m_serverVersion < 13:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS.code(), EClientErrors.UPDATE_TWS.msg())
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             return
         VERSION = 1
         try:
             self.send(self.REQ_FA)
             self.send(VERSION)
             self.send(faDataType)
+<<<<<<< HEAD
         except Exception as e:
             self.error(faDataType, EClientErrors.FAIL_SEND_FA_REQUEST, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(faDataType, EClientErrors.FAIL_SEND_FA_REQUEST, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def replaceFA(self, faDataType, xml):
+<<<<<<< HEAD
         """ generated source for method replaceFA """
         #  not connected?
         if not self.m_connected:
@@ -1312,6 +1923,13 @@ class EClientSocket(object):
         #  This feature is only available for versions of TWS >= 13
         if self.m_serverVersion < 13:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS.code_(), EClientErrors.UPDATE_TWS.msg())
+=======
+        if not self.m_connected:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
+            return
+        if self.m_serverVersion < 13:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS.code(), EClientErrors.UPDATE_TWS.msg())
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             return
         VERSION = 1
         try:
@@ -1319,18 +1937,29 @@ class EClientSocket(object):
             self.send(VERSION)
             self.send(faDataType)
             self.send(xml)
+<<<<<<< HEAD
         except Exception as e:
             self.error(faDataType, EClientErrors.FAIL_SEND_FA_REPLACE, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(faDataType, EClientErrors.FAIL_SEND_FA_REPLACE, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqCurrentTime(self):
+<<<<<<< HEAD
         """ generated source for method reqCurrentTime """
         #  not connected?
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
         #  This feature is only available for versions of TWS >= 33
+=======
+        if not self.m_connected:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
+            return
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if self.m_serverVersion < 33:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS, "  It does not support current time requests.")
             return
@@ -1338,13 +1967,21 @@ class EClientSocket(object):
         try:
             self.send(self.REQ_CURRENT_TIME)
             self.send(VERSION)
+<<<<<<< HEAD
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_REQCURRTIME, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_REQCURRTIME, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqFundamentalData(self, reqId, contract, reportType):
+<<<<<<< HEAD
         """ generated source for method reqFundamentalData """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(reqId, EClientErrors.NOT_CONNECTED, "")
             return
@@ -1353,11 +1990,17 @@ class EClientSocket(object):
             return
         VERSION = 1
         try:
+<<<<<<< HEAD
             #  send req fund data msg
             self.send(self.REQ_FUNDAMENTAL_DATA)
             self.send(VERSION)
             self.send(reqId)
             #  send contract fields
+=======
+            self.send(self.REQ_FUNDAMENTAL_DATA)
+            self.send(VERSION)
+            self.send(reqId)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.send(contract.m_symbol)
             self.send(contract.m_secType)
             self.send(contract.m_exchange)
@@ -1365,13 +2008,21 @@ class EClientSocket(object):
             self.send(contract.m_currency)
             self.send(contract.m_localSymbol)
             self.send(reportType)
+<<<<<<< HEAD
         except Exception as e:
             self.error(reqId, EClientErrors.FAIL_SEND_REQFUNDDATA, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(reqId, EClientErrors.FAIL_SEND_REQFUNDDATA, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def cancelFundamentalData(self, reqId):
+<<<<<<< HEAD
         """ generated source for method cancelFundamentalData """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(reqId, EClientErrors.NOT_CONNECTED, "")
             return
@@ -1380,17 +2031,28 @@ class EClientSocket(object):
             return
         VERSION = 1
         try:
+<<<<<<< HEAD
             #  send req mkt data msg
             self.send(self.CANCEL_FUNDAMENTAL_DATA)
             self.send(VERSION)
             self.send(reqId)
         except Exception as e:
             self.error(reqId, EClientErrors.FAIL_SEND_CANFUNDDATA, "" + e)
+=======
+            self.send(self.CANCEL_FUNDAMENTAL_DATA)
+            self.send(VERSION)
+            self.send(reqId)
+        except (Exception, ), e:
+            self.error(reqId, EClientErrors.FAIL_SEND_CANFUNDDATA, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def calculateImpliedVolatility(self, reqId, contract, optionPrice, underPrice):
+<<<<<<< HEAD
         """ generated source for method calculateImpliedVolatility """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -1399,11 +2061,17 @@ class EClientSocket(object):
             return
         VERSION = 1
         try:
+<<<<<<< HEAD
             #  send calculate implied volatility msg
             self.send(self.REQ_CALC_IMPLIED_VOLAT)
             self.send(VERSION)
             self.send(reqId)
             #  send contract fields
+=======
+            self.send(self.REQ_CALC_IMPLIED_VOLAT)
+            self.send(VERSION)
+            self.send(reqId)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.send(contract.m_conId)
             self.send(contract.m_symbol)
             self.send(contract.m_secType)
@@ -1417,13 +2085,21 @@ class EClientSocket(object):
             self.send(contract.m_localSymbol)
             self.send(optionPrice)
             self.send(underPrice)
+<<<<<<< HEAD
         except Exception as e:
             self.error(reqId, EClientErrors.FAIL_SEND_REQCALCIMPLIEDVOLAT, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(reqId, EClientErrors.FAIL_SEND_REQCALCIMPLIEDVOLAT, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def cancelCalculateImpliedVolatility(self, reqId):
+<<<<<<< HEAD
         """ generated source for method cancelCalculateImpliedVolatility """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -1432,17 +2108,28 @@ class EClientSocket(object):
             return
         VERSION = 1
         try:
+<<<<<<< HEAD
             #  send cancel calculate implied volatility msg
             self.send(self.CANCEL_CALC_IMPLIED_VOLAT)
             self.send(VERSION)
             self.send(reqId)
         except Exception as e:
             self.error(reqId, EClientErrors.FAIL_SEND_CANCALCIMPLIEDVOLAT, "" + e)
+=======
+            self.send(self.CANCEL_CALC_IMPLIED_VOLAT)
+            self.send(VERSION)
+            self.send(reqId)
+        except (Exception, ), e:
+            self.error(reqId, EClientErrors.FAIL_SEND_CANCALCIMPLIEDVOLAT, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def calculateOptionPrice(self, reqId, contract, volatility, underPrice):
+<<<<<<< HEAD
         """ generated source for method calculateOptionPrice """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -1451,11 +2138,17 @@ class EClientSocket(object):
             return
         VERSION = 1
         try:
+<<<<<<< HEAD
             #  send calculate option price msg
             self.send(self.REQ_CALC_OPTION_PRICE)
             self.send(VERSION)
             self.send(reqId)
             #  send contract fields
+=======
+            self.send(self.REQ_CALC_OPTION_PRICE)
+            self.send(VERSION)
+            self.send(reqId)
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.send(contract.m_conId)
             self.send(contract.m_symbol)
             self.send(contract.m_secType)
@@ -1469,13 +2162,21 @@ class EClientSocket(object):
             self.send(contract.m_localSymbol)
             self.send(volatility)
             self.send(underPrice)
+<<<<<<< HEAD
         except Exception as e:
             self.error(reqId, EClientErrors.FAIL_SEND_REQCALCOPTIONPRICE, "" + e)
+=======
+        except (Exception, ), e:
+            self.error(reqId, EClientErrors.FAIL_SEND_REQCALCOPTIONPRICE, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def cancelCalculateOptionPrice(self, reqId):
+<<<<<<< HEAD
         """ generated source for method cancelCalculateOptionPrice """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -1484,18 +2185,29 @@ class EClientSocket(object):
             return
         VERSION = 1
         try:
+<<<<<<< HEAD
             #  send cancel calculate option price msg
             self.send(self.CANCEL_CALC_OPTION_PRICE)
             self.send(VERSION)
             self.send(reqId)
         except Exception as e:
             self.error(reqId, EClientErrors.FAIL_SEND_CANCALCOPTIONPRICE, "" + e)
+=======
+            self.send(self.CANCEL_CALC_OPTION_PRICE)
+            self.send(VERSION)
+            self.send(reqId)
+        except (Exception, ), e:
+            self.error(reqId, EClientErrors.FAIL_SEND_CANCALCOPTIONPRICE, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @synchronized(mlock)
     def reqGlobalCancel(self):
+<<<<<<< HEAD
         """ generated source for method reqGlobalCancel """
         #  not connected?
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         if not self.m_connected:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.NOT_CONNECTED, "")
             return
@@ -1503,6 +2215,7 @@ class EClientSocket(object):
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.UPDATE_TWS, "  It does not support globalCancel requests.")
             return
         VERSION = 1
+<<<<<<< HEAD
         #  send request global cancel msg
         try:
             self.send(self.REQ_GLOBAL_CANCEL)
@@ -1529,26 +2242,43 @@ class EClientSocket(object):
             self.send(marketDataType)
         except Exception as e:
             self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_REQMARKETDATATYPE, "" + e)
+=======
+        try:
+            self.send(self.REQ_GLOBAL_CANCEL)
+            self.send(VERSION)
+        except (Exception, ), e:
+            self.error(EClientErrors.NO_VALID_ID, EClientErrors.FAIL_SEND_REQGLOBALCANCEL, str(e))
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.close()
 
     @overloaded
     @synchronized(mlock)
     def error(self, err):
+<<<<<<< HEAD
         """ generated source for method error """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         self.m_anyWrapper.error(err)
 
     @error.register(object, int, int, str)
     @synchronized(mlock)
     def error_0(self, id, errorCode, errorMsg):
+<<<<<<< HEAD
         """ generated source for method error_0 """
         self.m_anyWrapper.error(id, errorCode, errorMsg)
 
     def close(self):
         """ generated source for method close """
+=======
+        self.m_anyWrapper.error(id, errorCode, errorMsg)
+
+    def close(self):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         self.eDisconnect()
         self.wrapper().connectionClosed()
 
     @classmethod
+<<<<<<< HEAD
     def is_(cls, str_):
         """ generated source for method is_ """
         #  return true if the string is not empty
@@ -1576,47 +2306,88 @@ class EClientSocket(object):
 
     def sendEOL(self):
         """ generated source for method sendEOL """
+=======
+    def is_(cls, strval):
+        return strval is not None and len(strval) > 0
+
+    @classmethod
+    def isNull(cls, strval):
+        return not cls.is_(strval)
+
+    @error.register(object, int, EClientErrors.CodeMsgPair, str)
+    def error_1(self, id, pair, tail):
+        self.error(id, pair.code(), pair.msg() + tail)
+
+    @overloaded
+    def send(self, strval):
+        if not self.IsEmpty(strval):
+            self.m_dos.write(strval.getBytes())
+        self.sendEOL()
+
+    def sendEOL(self):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         self.m_dos.write(self.EOL)
 
     @send.register(object, int)
     def send_0(self, val):
+<<<<<<< HEAD
         """ generated source for method send_0 """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         self.send(str(val))
 
     @send.register(object, str)
     def send_1(self, val):
+<<<<<<< HEAD
         """ generated source for method send_1 """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         self.m_dos.write(val)
         self.sendEOL()
 
     @send.register(object, float)
     def send_2(self, val):
+<<<<<<< HEAD
         """ generated source for method send_2 """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         self.send(str(val))
 
     @send.register(object, long)
     def send_3(self, val):
+<<<<<<< HEAD
         """ generated source for method send_3 """
+=======
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
         self.send(str(val))
 
     @overloaded
     def sendMax(self, val):
+<<<<<<< HEAD
         """ generated source for method sendMax """
         if val == Double.MAX_VALUE:
+=======
+        if (val == Double.MAX_VALUE):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.sendEOL()
         else:
             self.send(str(val))
 
     @sendMax.register(object, int)
     def sendMax_0(self, val):
+<<<<<<< HEAD
         """ generated source for method sendMax_0 """
         if val == Integer.MAX_VALUE:
+=======
+        if (val == Integer.MAX_VALUE):
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
             self.sendEOL()
         else:
             self.send(str(val))
 
     @send.register(object, bool)
     def send_4(self, val):
+<<<<<<< HEAD
         """ generated source for method send_4 """
         self.send(1 if val else 0)
 
@@ -1624,4 +2395,12 @@ class EClientSocket(object):
     def IsEmpty(cls, str_):
         """ generated source for method IsEmpty """
         return not bool(str_)
+=======
+        self.send(1 if val else 0)
+
+    @classmethod
+    def IsEmpty(cls, strval):
+        return Util.StringIsEmpty(strval)
+
+>>>>>>> 20ffc5bc49675c47bd2ac3241f31212183085465
 
