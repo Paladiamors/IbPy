@@ -3,7 +3,7 @@ Name: IbPy
 Version: 0.8.0-9.67
 Summary: IbPy - Interactive Brokers Python API
 Home-page: https://github.com/Paladiamors/IbPy/tree/master/ib
-Author: Troy Melhase
+Author: Justin Ho
 Author-email: paladiamors@yahoo.com
 License: BSD License
 Download-URL: https://github.com/Paladiamors/IbPy/tree/master/ib
